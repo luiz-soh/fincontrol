@@ -1,9 +1,10 @@
 ﻿using Domain.Enums;
 
-namespace Domain.DTOs.Category
+namespace Application.Category.Boundaries
 {
-    public class CreateCategoryDTO
+    public class UpdateCategoryInput
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public CategoryTypeEnum Type { get; set; }
     }
