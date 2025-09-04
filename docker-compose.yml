@@ -1,0 +1,35 @@
+services:
+  api-genivs:
+    build:
+      context: .
+      args:
+        - BUILD_CONFIGURATION=Debug
+      dockerfile: Dockerfile
+    ports:
+      - "5275:8080"
+    environment:
+      ConnectionString: "User ID=local;Password=SenhaLocalFinControl;Host=fin-db;Port=5432;Database=fincontrol;Pooling=true;"
+    depends_on:
+      fin-db:
+        condition: service_healthy
+
+  fin-db:
+    hostname: postgres-fincontrol
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "SenhaLocalFinControl"
+      POSTGRES_USER: local
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - findb-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+volumes:
+  findb-volume:
