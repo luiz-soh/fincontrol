@@ -19,40 +19,61 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryInput input)
         {
-            var dto = new CategoryDTO()
+            try
             {
-                Name = input.Name,
-                Type = input.Type,
-            };
+                var dto = new CategoryDTO()
+                {
+                    Name = input.Name,
+                    Type = input.Type,
+                };
 
-            await _categoryService.CreateCategory(dto);
+                await _categoryService.CreateCategory(dto);
 
-            return StatusCode(StatusCodes.Status201Created);
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryInput input)
         {
-            var dto = new CategoryDTO()
+            try
             {
-                Id = input.Id,
-                Name = input.Name,
-                Type = input.Type,
-            };
+                var dto = new CategoryDTO()
+                {
+                    Id = input.Id,
+                    Name = input.Name,
+                    Type = input.Type,
+                };
 
-            await _categoryService.UpdateCategory(dto);
+                await _categoryService.UpdateCategory(dto);
 
-            return StatusCode(StatusCodes.Status200OK);
+                return StatusCode(StatusCodes.Status200OK);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById([FromRoute] int id)
         {
-            var dto = await _categoryService.GetCategoryById(id);
+            try
+            {
+                var dto = await _categoryService.GetCategoryById(id);
 
-            var response = new CategoryOutput(dto);
+                var response = new CategoryOutput(dto);
 
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet("list")]
@@ -68,9 +89,16 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory([FromRoute] int id)
         {
-            await _categoryService.DeleteCategoryById(id);
+            try
+            {
+                await _categoryService.DeleteCategoryById(id);
 
-            return StatusCode(StatusCodes.Status204NoContent);
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

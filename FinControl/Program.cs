@@ -1,5 +1,7 @@
 using Application.Category;
+using Application.Transaction;
 using Domain.Entities.Category;
+using Domain.Entities.Transaction;
 using Infra.Configuration;
 using Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,8 @@ builder.Services.AddDbContext<ContextBase>(options =>
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 builder.Services.AddSwaggerGen();
 
