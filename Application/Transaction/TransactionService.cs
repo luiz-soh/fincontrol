@@ -15,5 +15,36 @@ namespace Application.Transaction
         {
             await _transactionRepository.CreateTransaction(dto);
         }
+
+        public async Task DeleteTransactionById(int id)
+        {
+            await _transactionRepository.DeleteTransactionById(id);
+        }
+
+        public async Task<TransactionDTO> GetTransactionById(int id)
+        {
+            var dto = await _transactionRepository.GetTransactionById(id);
+
+            if (dto is null)
+                return new TransactionDTO();
+
+            return new TransactionDTO(dto);
+        }
+
+        public async Task<List<TransactionDTO>> ListTransactions()
+        {
+            var entities = await _transactionRepository.ListTransactions();
+
+            return [.. entities.Select(x => new TransactionDTO(x))];
+        }
+
+        public async Task UpdateTransaction(TransactionDTO dto)
+        {
+            var transactionExist = await _transactionRepository.GetTransactionById(dto.Id);
+            if (transactionExist != null)
+            {
+                await _transactionRepository.UpdateTransaction(dto);
+            }
+        }
     }
 }
